@@ -15,10 +15,10 @@ shift = 0
 
 x_start, y_start = 20, 10
 
-img_file_back =     path.dirname(__file__)+ '/Batman.png'
-img_file_hero =     path.dirname(__file__)+ '/Flash.png'
-img_file_enemy =    path.dirname(__file__)+ '/Joker.png'
-img_file_bomb =     path.dirname(__file__)+ '/Penguin.png'
+img_file_back =     path.dirname(__file__)+ '/Spiderman.png'
+img_file_hero =     path.dirname(__file__)+ '/Ironman.png'
+img_file_enemy =    path.dirname(__file__)+ '/Thanos.png'
+img_file_bomb =     path.dirname(__file__)+ '/Antman.png'
 img_file_princess = path.dirname(__file__)+ '/princess.png'
 FPS = 60
 
@@ -191,11 +191,11 @@ while run:
             run = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                robin.x_speed = -8
+                robin.x_speed = -2
             elif event.key == pygame.K_RIGHT:
-                robin.x_speed = 8
+                robin.x_speed = 2
             elif event.key == pygame.K_UP:
-                robin.jump(-8)
+                robin.jump(-10)
 
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
