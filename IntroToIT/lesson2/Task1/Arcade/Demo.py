@@ -1,13 +1,13 @@
 # Подключить нужные модули
-from random import randint 
-import pygame 
+from random import randint
+import pygame
 from os import path
-pygame.init() 
+pygame.init()
 # во время игры пишем надписи размера 72
 font = pygame.font.Font(None, 72)
 
 # Глобальные переменные (настройки)
-win_width = 800 
+win_width = 800
 win_height = 600
 left_bound = win_width / 40             # границы, за которые персонаж не выходит (начинает ехать фон)
 right_bound = win_width - 8 * left_bound
@@ -15,10 +15,10 @@ shift = 0
 
 x_start, y_start = 20, 10
 
-img_file_back =     path.dirname(__file__)+ '/cave.png'
-img_file_hero =     path.dirname(__file__)+ '/m1.png'
-img_file_enemy =    path.dirname(__file__)+ '/enemy.png' 
-img_file_bomb =     path.dirname(__file__)+ '/bomb.png'
+img_file_back =     path.dirname(__file__)+ '/Batman.png'
+img_file_hero =     path.dirname(__file__)+ '/Flash.png'
+img_file_enemy =    path.dirname(__file__)+ '/Joker.png'
+img_file_bomb =     path.dirname(__file__)+ '/Penguin.png'
 img_file_princess = path.dirname(__file__)+ '/princess.png'
 FPS = 60
 
@@ -46,18 +46,18 @@ class FinalSprite(pygame.sprite.Sprite):
       self.rect = self.image.get_rect()
       self.rect.x = player_x
       self.rect.y = player_y
-      
+
 class Hero(pygame.sprite.Sprite):
     def __init__(self, filename, x_speed=0, y_speed=0, x=x_start, y=y_start, width=120, height=120):
         pygame.sprite.Sprite.__init__(self)
         # картинка загружается из файла и умещается в прямоугольник нужных размеров:
-        self.image = pygame.transform.scale(pygame.image.load(filename), (width, height)).convert_alpha() 
+        self.image = pygame.transform.scale(pygame.image.load(filename), (width, height)).convert_alpha()
                     # используем convert_alpha, нам надо сохранять прозрачность
 
-        # каждый спрайт должен хранить свойство rect - прямоугольник. Это свойство нужно для определения касаний спрайтов. 
+        # каждый спрайт должен хранить свойство rect - прямоугольник. Это свойство нужно для определения касаний спрайтов.
         self.rect = self.image.get_rect()
         # ставим персонажа в переданную точку (x, y):
-        self.rect.x = x 
+        self.rect.x = x
         self.rect.y = y
         # создаем свойства, запоминаем переданные значения:
         self.x_speed = x_speed
@@ -85,16 +85,16 @@ class Hero(pygame.sprite.Sprite):
             for p in platforms_touched:
                 self.rect.left = max(self.rect.left, p.rect.right) # если коснулись нескольких стен, то левый край - максимальный
 
-        # теперь движение по вертикали        
+        # теперь движение по вертикали
         self.gravitate()
         self.rect.y += self.y_speed
         # если зашли за стенку, то встанем вплотную к стене
         platforms_touched = pygame.sprite.spritecollide(self, barriers, False)
         if self.y_speed > 0: # идем вниз
             for p in platforms_touched:
-                self.y_speed = 0 
+                self.y_speed = 0
                 # Проверяем, какая из платформ снизу самая высокая, выравниваемся по ней, запоминаем её как свою опору:
-                if p.rect.top < self.rect.bottom: 
+                if p.rect.top < self.rect.bottom:
                     self.rect.bottom = p.rect.top
                     self.stands_on = p
         elif self.y_speed < 0: # идем вверх
@@ -111,9 +111,9 @@ class Wall(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
 
-        # создаем свойство rect 
+        # создаем свойство rect
         self.rect = self.image.get_rect()
-        self.rect.x = x 
+        self.rect.x = x
         self.rect.y = y
 
 class Enemy(pygame.sprite.Sprite): # враг
@@ -122,7 +122,7 @@ class Enemy(pygame.sprite.Sprite): # враг
 
         self.image = pygame.transform.scale(pygame.image.load(filename), (width, height)).convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.x = x 
+        self.rect.x = x
         self.rect.y = y
 
     def update(self):
@@ -131,10 +131,10 @@ class Enemy(pygame.sprite.Sprite): # враг
         self.rect.y += randint(-5, 5)
 
 # Запуск игры
-pygame.display.set_caption("ARCADA") 
+pygame.display.set_caption("ARCADA")
 window = pygame.display.set_mode([win_width, win_height])
 
-back = pygame.transform.scale(pygame.image.load(img_file_back).convert(), (win_width, win_height)) 
+back = pygame.transform.scale(pygame.image.load(img_file_back).convert(), (win_width, win_height))
 
 # список всех персонажей игры:
 all_sprites = pygame.sprite.Group()
@@ -146,13 +146,13 @@ enemies = pygame.sprite.Group()
 bombs = pygame.sprite.Group()
 
 # создаем персонажа, добавляем его в список всех спрайтов:
-robin = Hero(img_file_hero) 
+robin = Hero(img_file_hero)
 all_sprites.add(robin)
 # создаем стены, добавляем их:
 w = Wall(50, 150, 480, 20)
 barriers.add(w)
 all_sprites.add(w)
-w = Wall(700, 50, 50, 360) 
+w = Wall(700, 50, 50, 360)
 barriers.add(w)
 all_sprites.add(w)
 w = Wall(350, 380, 640, 20)
@@ -181,48 +181,48 @@ pr = FinalSprite(img_file_princess, win_width + 500, win_height - 150, 0)
 all_sprites.add(pr)
 
 # Основной цикл игры:
-run = True 
+run = True
 finished = False
 
 while run:
     # Обработка событий
-    for event in pygame.event.get(): 
-        if event.type == pygame.QUIT: 
-            run = False 
-        elif event.type == pygame.KEYDOWN: 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                robin.x_speed = -5 
+                robin.x_speed = -8
             elif event.key == pygame.K_RIGHT:
-                robin.x_speed = 5 
+                robin.x_speed = 8
             elif event.key == pygame.K_UP:
-                robin.jump(-7)
+                robin.jump(-8)
 
-        elif event.type == pygame.KEYUP: 
+        elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 robin.x_speed = 0
             elif event.key == pygame.K_RIGHT:
                 robin.x_speed = 0
 
     if not finished:
-        # Перемещение игровых объектов 
+        # Перемещение игровых объектов
         all_sprites.update()
 
         # дальше проверки правил игры
         # проверяем касание с бомбами:
-        pygame.sprite.groupcollide(bombs, all_sprites, True, True) 
+        pygame.sprite.groupcollide(bombs, all_sprites, True, True)
                 # если бомба коснулась спрайта, то она убирается из списка бомб, а спрайт - из all_sprites!
 
         # проверяем касание героя с врагами:
         if pygame.sprite.spritecollide(robin, enemies, False):
             robin.kill() # метод kill убирает спрайт из всех групп, в которых он числится
 
-        # проверяем границы экрана: 
+        # проверяем границы экрана:
         if (
             robin.rect.x > right_bound and robin.x_speed > 0
             or
             robin.rect.x < left_bound and robin.x_speed < 0
         ): # при выходе влево или вправо переносим изменение в сдвиг экрана
-            shift -= robin.x_speed  
+            shift -= robin.x_speed
             # перемещаем на общий сдвиг все спрайты (и отдельно бомбы, они ж в другом списке):
             for s in all_sprites:
                 s.rect.x -= robin.x_speed # сам robin тоже в этом списке, поэтому его перемещение визуально отменится
@@ -231,14 +231,14 @@ while run:
 
         # Отрисовка
         # рисуем фон со сдвигом
-        local_shift = shift % win_width 
-        window.blit(back, (local_shift, 0)) 
+        local_shift = shift % win_width
+        window.blit(back, (local_shift, 0))
         if local_shift != 0:
-            window.blit(back, (local_shift - win_width, 0)) 
+            window.blit(back, (local_shift - win_width, 0))
 
         # нарисуем все спрайты на экранной поверхности до проверки на выигрыш/проигрыш
         # если в этой итерации цикла игра закончилась, то новый фон отрисуется поверх персонажей
-        all_sprites.draw(window)  
+        all_sprites.draw(window)
         # группу бомб рисуем отдельно - так бомба, которая ушла из своей группы, автоматически перестанет быть видимой
         bombs.draw(window)
 
@@ -252,13 +252,13 @@ while run:
 
         # проверка на проигрыш:
         if robin not in all_sprites or robin.rect.top > win_height:
-            finished = True            
-            window.fill(C_BLACK) 
+            finished = True
+            window.fill(C_BLACK)
             # пишем текст на экране
             text = font.render("GAME OVER", 1, C_RED)
             window.blit(text, (250, 250))
 
-    pygame.display.update() 
+    pygame.display.update()
 
     # Пауза
     pygame.time.delay(20)
