@@ -1,7 +1,7 @@
 #INTRO TO IT 2nd COURSE
 # Задача 7: Факториал на месте!
 # Рассчитай факториал введенного числа.
-def факториал(число):
-    return 1 if число == 0 else число * факториал(число-1)
-число = 5
-print(f"Факториал {число} равен {факториал(число)}")
+def factorial(integer_t):
+    return 1 if integer_t == 0 else integer_t * factorial(integer_t-1)
+count = 5
+print(f"Факториал {count} равен {factorial(count)}")
